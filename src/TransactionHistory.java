@@ -16,4 +16,11 @@ public class TransactionHistory {
     public List<Transaction> getTransactions() {
         return transactions;
     }
+
+    public void displayTransactionHistoy() {
+        System.out.println("\nTransaction History: ");
+        for (Transaction transaction : transactions) {
+            System.out.println(transaction.toString());
+        }
+    }
 }

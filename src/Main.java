@@ -50,5 +50,11 @@ public class Main {
         System.out.println(bank.getAccount("UK01ABCD1234567890").printBalanceInCurrency("GBP"));
         System.out.println(bank.getAccount("US02ABCD1234567890").printBalanceInCurrency("AFN"));
         System.out.println(bank.getAccount("AF01ABCD1234567890").printBalanceInCurrency("EUR"));
+
+        // Transactie geschiedenis weergeven
+        Account NL01 = bank.getAccount("NL01ABCD1234567890");
+        NL01.getTransactionHistory().displayTransactionHistoy();
+        Account NL02 = bank.getAccount("NL02ABCD1234567890");
+        NL02.getTransactionHistory().displayTransactionHistoy();
     }
 }

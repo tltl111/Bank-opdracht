@@ -5,6 +5,7 @@ public class Account {
     private String accountNumber;
     private double balance;
     private String currency;
+    private TransactionHistory transactionHistory;
 
     DecimalFormat df = new DecimalFormat("#.00");
 
@@ -12,6 +13,7 @@ public class Account {
         this.accountNumber = accountNumber;
         this.balance = initalBalance;
         this.currency = currency;
+        this.transactionHistory = new TransactionHistory();
     }
 
     public String getAccountNumber() {
@@ -30,7 +32,7 @@ public class Account {
             System.out.println("Succesfully deposited " + formatAmount(amount, currency) +
             " into account: " + accountNumber);
             System.out.println("New balance of " + accountNumber + ": " + formatAmount(balance, this.currency) + "\n");
-    } else {
+        } else {
         CurrencyConverter converter = new CurrencyConverter();
         double convertedAmount = converter.convert(amount, currency, this.currency);
         balance += convertedAmount;
@@ -39,6 +41,8 @@ public class Account {
                     ") into account: " + accountNumber);
         System.out.println("New balance of " + accountNumber + ": " + formatAmount(balance, this.currency) + "\n");
         }
+        Transaction depositTransaction = new Transaction(Transaction.TransactionType.DEPOSIT, accountNumber, amount, currency);
+        transactionHistory.addTransaction(depositTransaction);
     }
 
     public void withdraw(double amount, String currency) {
@@ -69,6 +73,8 @@ public class Account {
                 System.out.println("Insufficient balance on account: " + accountNumber + "\n");
             }
         }
+        Transaction withdrawalTransaction = new Transaction(Transaction.TransactionType.WITHDRAWAL, accountNumber, amount, currency);
+    transactionHistory.addTransaction(withdrawalTransaction);
     }
 
     public String printBalanceInCurrency(String targetCurrency) {
@@ -89,5 +95,9 @@ public class Account {
     @Override
     public String toString() {
         return "Account Number: " + accountNumber + ", " + getBalanceWithCurrency();
+    }
+
+    public TransactionHistory getTransactionHistory() {
+        return transactionHistory;
     }
 }

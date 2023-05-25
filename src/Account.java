@@ -41,14 +41,17 @@ public class Account {
                     ") into account: " + accountNumber);
         System.out.println("New balance of " + accountNumber + ": " + formatAmount(balance, this.currency) + "\n");
         }
-        Transaction depositTransaction = new Transaction(Transaction.TransactionType.DEPOSIT, accountNumber, amount, currency);
+        Transaction depositTransaction = new Transaction(Transaction.TransactionType.DEPOSIT, accountNumber, amount, currency, true);
         transactionHistory.addTransaction(depositTransaction);
     }
 
     public void withdraw(double amount, String currency) {
+        boolean successful = false;
+        
         if (this.currency.equals(currency)) {
             if (balance >= amount) {
                 balance -= amount;
+                successful = true;
                 System.out.println("Successfully withdrew " + formatAmount(amount, currency) +
                         " from account: " + accountNumber);
                 System.out.println("New balance of " + accountNumber + ": " + formatAmount(balance, this.currency) + "\n");
@@ -62,6 +65,7 @@ public class Account {
             double convertedAmount = converter.convert(amount, currency, this.currency);
             if (balance >= convertedAmount) {
                 balance -= convertedAmount;
+                successful = true;
                 System.out.println("Successfully withdrew " + formatAmount(amount, currency) +
                         " (converted to " + formatAmount(convertedAmount, this.currency) +
                         ") from account: " + accountNumber);
@@ -73,8 +77,8 @@ public class Account {
                 System.out.println("Insufficient balance on account: " + accountNumber + "\n");
             }
         }
-        Transaction withdrawalTransaction = new Transaction(Transaction.TransactionType.WITHDRAWAL, accountNumber, amount, currency);
-    transactionHistory.addTransaction(withdrawalTransaction);
+        Transaction withdrawalTransaction = new Transaction(Transaction.TransactionType.WITHDRAWAL, accountNumber, amount, currency, successful);
+        transactionHistory.addTransaction(withdrawalTransaction);
     }
 
     public String printBalanceInCurrency(String targetCurrency) {

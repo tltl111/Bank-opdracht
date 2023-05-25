@@ -13,23 +13,27 @@ public class Transaction {
     private double amount;
     private String currency;
     private Date timestamp;
+    private boolean successful;
 
     private DecimalFormat df = new DecimalFormat("#.00");
 
-    public Transaction(TransactionType type, String accountNumber, double amount, String currency) {
+    public Transaction(TransactionType type, String accountNumber, double amount, String currency, boolean successful) {
         this.type = type;
         this.accountNumber = accountNumber;
         this.amount = amount;
         this.currency = currency;
         this.timestamp = new Date();
+        this.successful = successful;
     }
 
     @Override
     public String toString() {
+        String status = successful ? "Successful" : "Unsuccessful";
         return "Transaction: " + type +
                 ", Amount: " + formatAmount(amount) +
                 ", Currency: " + currency +
-                ", Timestamp: " + timestamp;
+                ", Timestamp: " + timestamp +
+                ", Status: " + status;
     }
 
     private String formatAmount(double amount) {

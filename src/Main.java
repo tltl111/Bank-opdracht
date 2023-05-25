@@ -56,5 +56,7 @@ public class Main {
         NL01.getTransactionHistory().displayTransactionHistoy();
         Account NL02 = bank.getAccount("NL02ABCD1234567890");
         NL02.getTransactionHistory().displayTransactionHistoy();
+        Account US01 = bank.getAccount("US01ABCD1234567890");
+        US01.getTransactionHistory().displayTransactionHistoy();
     }
 }

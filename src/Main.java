@@ -4,7 +4,7 @@ public class Main {
 
         // Nieuwe rekeningen aanmaken
         bank.createAccount("NL", 1000.0);
-        bank.createAccount("NL", 500.0);     
+        bank.createAccount("NL", 500.0);
         bank.createAccount("UK", 10000.0);
         bank.createAccount("UK", 10000.0);
         bank.createAccount("UK", 10000.0);
@@ -16,7 +16,6 @@ public class Main {
         bank.createAccount("AF", 10000.0);
         bank.createAccount("AF", 10000.0);
 
-        
         // Geld storten
         bank.deposit("NL01ABCD1234567890", 250.0);
         bank.deposit("US01ABCD1234567890", 910.0);

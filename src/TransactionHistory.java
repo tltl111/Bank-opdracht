@@ -17,7 +17,7 @@ public class TransactionHistory {
         return transactions;
     }
 
-    public void displayTransactionHistoy() {
+    public void displayTransactionHistory() {
         System.out.println("\nTransaction History: ");
         for (Transactions transaction : transactions) {
             System.out.println(transaction.toString());

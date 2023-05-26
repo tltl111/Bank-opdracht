@@ -52,10 +52,10 @@ public class Main {
 
         // Transactie geschiedenis weergeven
         Account NL01 = bank.getAccount("NL01ABCD1234567890");
-        NL01.getTransactionHistory().displayTransactionHistoy();
+        NL01.getTransactionHistory().displayTransactionHistory();
         Account NL02 = bank.getAccount("NL02ABCD1234567890");
-        NL02.getTransactionHistory().displayTransactionHistoy();
+        NL02.getTransactionHistory().displayTransactionHistory();
         Account US01 = bank.getAccount("US01ABCD1234567890");
-        US01.getTransactionHistory().displayTransactionHistoy();
+        US01.getTransactionHistory().displayTransactionHistory();
     }
 }

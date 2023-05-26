@@ -1,45 +1,31 @@
-import java.text.DecimalFormat;
-import java.util.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class Transactions {
-    public enum TransactionType {
-        DEPOSIT,
-        WITHDRAWAL,
-        TRANSFER
+    private Map<String, List<String>> transactionHistoryMap;
+
+    public Transactions() {
+        transactionHistoryMap = new HashMap<>();
     }
 
-    private TransactionType type;
-    private String accountNumber;
-    private double amount;
-    private String currency;
-    private Date timestamp;
-    private boolean successful;
-
-    private DecimalFormat df = new DecimalFormat("#.00");
-
-    public Transactions(TransactionType type, String accountNumber, double amount, String currency, boolean successful) {
-        this.type = type;
-        this.accountNumber = accountNumber;
-        this.amount = amount;
-        this.currency = currency;
-        this.timestamp = new Date();
-        this.successful = successful;
+    public void logTransaction(String accountNumber, String transaction) {
+        List<String> transactionHistory = transactionHistoryMap.getOrDefault(accountNumber, new ArrayList<>());
+        transactionHistory.add(transaction);
+        transactionHistoryMap.put(accountNumber, transactionHistory);
     }
 
-    @Override
-    public String toString() {
-        String status = successful ? "Successful" : "Unsuccessful";
-        return "Transaction: " + type +
-                ", Amount: " + formatAmount(amount) +
-                ", Currency: " + currency +
-                ", Timestamp: " + timestamp +
-                ", Status: " + status;
+    public List<String> getTransactionHistory(String accountNumber) {
+        return transactionHistoryMap.getOrDefault(accountNumber, new ArrayList<>());
     }
 
-    private String formatAmount(double amount) {
-        return df.format(amount) + " " + currency;
+    public void printTransactionHistory(String accountNumber) {
+        List<String> transactionHistory = getTransactionHistory(accountNumber);
+        System.out.println("\nTransaction history for account " + accountNumber + ":");
+        for (String transaction : transactionHistory) {
+            System.out.println(transaction);
+        }
     }
 }

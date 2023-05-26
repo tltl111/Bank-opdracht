@@ -1,10 +1,10 @@
 public class Main {
     public static void main(String[] args) {
         Bank bank = new Bank();
-
+        
         // Nieuwe rekeningen aanmaken
         bank.createAccount("NL", 1000.0);
-        bank.createAccount("NL", 500.0);
+        bank.createAccount("NL", 500.0);     
         bank.createAccount("UK", 10000.0);
         bank.createAccount("UK", 10000.0);
         bank.createAccount("UK", 10000.0);
@@ -16,6 +16,7 @@ public class Main {
         bank.createAccount("AF", 10000.0);
         bank.createAccount("AF", 10000.0);
 
+        
         // Geld storten
         bank.deposit("NL01ABCD1234567890", 250.0);
         bank.deposit("US01ABCD1234567890", 910.0);
@@ -49,13 +50,12 @@ public class Main {
         System.out.println(bank.getAccount("UK01ABCD1234567890").printBalanceInCurrency("GBP"));
         System.out.println(bank.getAccount("US02ABCD1234567890").printBalanceInCurrency("AFN"));
         System.out.println(bank.getAccount("AF01ABCD1234567890").printBalanceInCurrency("EUR"));
-
+    
         // Transactie geschiedenis weergeven
-        Account NL01 = bank.getAccount("NL01ABCD1234567890");
-        NL01.getTransactionHistory().displayTransactionHistory();
-        Account NL02 = bank.getAccount("NL02ABCD1234567890");
-        NL02.getTransactionHistory().displayTransactionHistory();
-        Account US01 = bank.getAccount("US01ABCD1234567890");
-        US01.getTransactionHistory().displayTransactionHistory();
+        bank.printHistory("NL01ABCD1234567890");
+        bank.printHistory("NL02ABCD1234567890");
+        bank.printHistory("UK01ABCD1234567890");
+        bank.printHistory("US02ABCD1234567890");
+        bank.printHistory("AF01ABCD1234567890");
     }
 }

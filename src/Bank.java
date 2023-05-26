@@ -6,9 +6,9 @@ import java.util.Map;
 
 
 public class Bank {
-
+    
     private Map<String, Integer> countryCodeCounters;
-    private List<Account> accounts;
+    private List<BankAccount> accounts;
 
     public Bank() {
         countryCodeCounters = new HashMap<>();
@@ -19,10 +19,13 @@ public class Bank {
         int accountCounter = countryCodeCounters.getOrDefault(countryCode, 1);
         String accountNumber = generateAccountNumber(countryCode, accountCounter);
         String currency = getCurrency(countryCode);
-        Account account = new Account(accountNumber, initialBalance, currency);
+        BankAccount account = new BankAccount(accountNumber, currency, initialBalance);
         accounts.add(account);
         countryCodeCounters.put(countryCode, accountCounter + 1);
         printAccountCreationMessage(account);
+        String transaction = "Account created: " + accountNumber +
+                " with balance: " + account.formatAmount(initialBalance, currency);
+        account.getTransactions().logTransaction(accountNumber, transaction);
     }
 
     private String getCurrency(String countryCode) {
@@ -39,14 +42,14 @@ public class Bank {
                 return "EUR";
         }
     }
-    
+
     private String generateAccountNumber(String countrycode, int accountCounter) {
         DecimalFormat df = new DecimalFormat("00");
         String counterString = df.format(accountCounter);
         return countrycode + counterString + "ABCD1234567890";
     }
 
-    private void printAccountCreationMessage(Account account) {
+    private void printAccountCreationMessage(BankAccount account) {
         DecimalFormat df = new DecimalFormat("#.00");
         String message = "Account created: " + account.getAccountNumber() + 
             " with balance: " + df.format(account.getBalance()) + 
@@ -55,24 +58,24 @@ public class Bank {
     }
 
     public void deposit(String accountNumber, double amount) {
-        Account account = getAccount(accountNumber);
+        BankAccount account = getAccount(accountNumber);
         if (account != null) {
-            account.deposit(amount, getCurrency(accountNumber));
+            account.deposit(amount, account.getCurrency());
         } else {
             System.out.println("Account not found");
         }
     }
     public void withdraw(String accountNumber, double amount) {
-        Account account = getAccount(accountNumber);
+        BankAccount account = getAccount(accountNumber);
         if (account != null) {
-            account.withdraw(amount, getCurrency(accountNumber));
+            account.withdraw(amount, account.getCurrency());
         } else {
             System.out.println("Account not found");
         }
     }
     public void transfer(String accountNumberFrom, double amount, String accountNumberTo) {
-        Account accountFrom = getAccount(accountNumberFrom);
-        Account accountTo = getAccount(accountNumberTo);
+        BankAccount accountFrom = getAccount(accountNumberFrom);
+        BankAccount accountTo = getAccount(accountNumberTo);
 
         if (accountFrom != null && accountTo != null) {
             String currency = accountFrom.getCurrency();
@@ -80,7 +83,7 @@ public class Bank {
             if (accountFrom.getBalance() >= amount) {
                 accountFrom.withdraw(amount, currency);
                 accountTo.deposit(amount, currency);
-                System.out.println("Succesfully transfeerd " + accountFrom.formatAmount(amount, currency) +
+                System.out.println("Successfully transferred " + accountFrom.formatAmount(amount, currency) +
                     " from account " + accountNumberFrom + " to account " + accountNumberTo);
             } else {
                 System.out.println("Insufficient balance in account " + accountNumberFrom +
@@ -91,12 +94,18 @@ public class Bank {
         }
     }
 
-    public Account getAccount(String accountNumber) {
-        for (Account account : accounts) {
+    public BankAccount getAccount(String accountNumber) {
+        for (BankAccount account : accounts) {
             if (account.getAccountNumber().equals(accountNumber)) {
                 return account;
             }
         }
         return null;
+    }
+
+    public void printHistory(String accountNumber) {
+        BankAccount account = getAccount(accountNumber);
+        Transactions transactions = account.getTransactions();
+        transactions.printTransactionHistory(accountNumber);
     }
 }

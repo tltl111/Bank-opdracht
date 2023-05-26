@@ -1,7 +1,7 @@
 import java.text.DecimalFormat;
 import java.util.Date;
 
-public class Transaction {
+public class Transactions {
     public enum TransactionType {
         DEPOSIT,
         WITHDRAWAL,
@@ -17,7 +17,7 @@ public class Transaction {
 
     private DecimalFormat df = new DecimalFormat("#.00");
 
-    public Transaction(TransactionType type, String accountNumber, double amount, String currency, boolean successful) {
+    public Transactions(TransactionType type, String accountNumber, double amount, String currency, boolean successful) {
         this.type = type;
         this.accountNumber = accountNumber;
         this.amount = amount;

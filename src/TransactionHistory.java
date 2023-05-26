@@ -3,23 +3,23 @@ import java.util.List;
 
 
 public class TransactionHistory {
-    private List<Transaction> transactions;
+    private List<Transactions> transactions;
 
     public TransactionHistory() {
         transactions = new ArrayList<>();
     }
 
-    public void addTransaction(Transaction transaction) {
+    public void addTransaction(Transactions transaction) {
         transactions.add(transaction);
     }
 
-    public List<Transaction> getTransactions() {
+    public List<Transactions> getTransactions() {
         return transactions;
     }
 
     public void displayTransactionHistoy() {
         System.out.println("\nTransaction History: ");
-        for (Transaction transaction : transactions) {
+        for (Transactions transaction : transactions) {
             System.out.println(transaction.toString());
         }
     }

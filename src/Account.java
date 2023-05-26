@@ -41,7 +41,7 @@ public class Account {
                     ") into account: " + accountNumber);
         System.out.println("New balance of " + accountNumber + ": " + formatAmount(balance, this.currency) + "\n");
         }
-        Transaction depositTransaction = new Transaction(Transaction.TransactionType.DEPOSIT, accountNumber, amount, currency, true);
+        Transactions depositTransaction = new Transactions(Transactions.TransactionType.DEPOSIT, accountNumber, amount, currency, true);
         transactionHistory.addTransaction(depositTransaction);
     }
 
@@ -77,7 +77,7 @@ public class Account {
                 System.out.println("Insufficient balance on account: " + accountNumber + "\n");
             }
         }
-        Transaction withdrawalTransaction = new Transaction(Transaction.TransactionType.WITHDRAWAL, accountNumber, amount, currency, successful);
+        Transactions withdrawalTransaction = new Transactions(Transactions.TransactionType.WITHDRAWAL, accountNumber, amount, currency, successful);
         transactionHistory.addTransaction(withdrawalTransaction);
     }
 

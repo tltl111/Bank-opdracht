@@ -7,25 +7,28 @@ import java.util.Map;
 
 public class Bank {
     
+    private Map<String, String> personAccountMap;
     private Map<String, Integer> countryCodeCounters;
     private List<BankAccount> accounts;
 
     public Bank() {
         countryCodeCounters = new HashMap<>();
         accounts = new ArrayList<>();
+        personAccountMap = new HashMap<>();
     }
 
-    public void createAccount(String countryCode, double initialBalance) {
+    public void createAccount(String countryCode, double initialBalance, Person accountOwner) {
         int accountCounter = countryCodeCounters.getOrDefault(countryCode, 1);
         String accountNumber = generateAccountNumber(countryCode, accountCounter);
         String currency = getCurrency(countryCode);
-        BankAccount account = new BankAccount(accountNumber, currency, initialBalance);
+        BankAccount account = new BankAccount(accountNumber, currency, initialBalance, accountOwner);
         accounts.add(account);
         countryCodeCounters.put(countryCode, accountCounter + 1);
         printAccountCreationMessage(account);
         String transaction = "Account created: " + accountNumber +
                 " with balance: " + account.formatAmount(initialBalance, currency);
         account.getTransactions().logTransaction(accountNumber, transaction);
+        personAccountMap.put(accountOwner.getName(), accountNumber);
     }
 
     private String getCurrency(String countryCode) {
@@ -101,6 +104,33 @@ public class Bank {
             }
         }
         return null;
+    }
+
+    public String getAccountNumberForPerson(String personName) {
+        return personAccountMap.get(personName);
+    }
+
+    public void printBalanceForPerson(String personName) {
+        String accountNumber = getAccountNumberForPerson(personName);
+        BankAccount account = getAccount(accountNumber);
+        System.out.println("\nBalance for " + personName + ": " + account.getBalance());
+    }
+
+    public void findRichestPerson() {
+        String richestPerson = null;
+        double maxBalance = Double.MIN_VALUE;
+        String currency = null;
+
+        for (BankAccount account : accounts) {
+            double balance = account.getBalance();
+            if (balance > maxBalance) {
+                maxBalance = balance;
+                richestPerson = account.getAccountOwner().getName();
+                currency = account.getCurrency();
+            }
+        }
+        System.out.println("\nThe person with the highest balance on their account is " + richestPerson);
+        System.out.println("Balance: " + maxBalance + " "  + currency);
     }
 
     public void printHistory(String accountNumber) {

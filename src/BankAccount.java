@@ -8,15 +8,18 @@ public class BankAccount {
     private String currency;
     private double balance;
     private Transactions transactions;
+    private Person accountOwner;
 
     private Map<String, Double> conversionRates;
 
-    public BankAccount(String accountNumber, String currency, double balance) {
+    public BankAccount(String accountNumber, String currency, double balance, Person accountOwner) {
         this.accountNumber = accountNumber;
         this.currency = currency;
         this.balance = balance;
         currencyConverter();
         transactions = new Transactions();
+        this.accountOwner = accountOwner;
+        
     }
 
     public String getAccountNumber() {
@@ -30,6 +33,9 @@ public class BankAccount {
     }
     public Transactions getTransactions() {
         return transactions;
+    }
+    public Person getAccountOwner() {
+        return accountOwner;
     }
 
     public void deposit(double amount, String currency) {

@@ -1,34 +1,46 @@
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Bank {
-    
+
+    DecimalFormat accountNumberdf = new DecimalFormat("0000000000");
+    DecimalFormat balanceFormat = new DecimalFormat("0.00");
+
     private Map<String, String> personAccountMap;
     private Map<String, Integer> countryCodeCounters;
     private List<BankAccount> accounts;
-
-    public Bank() {
-        countryCodeCounters = new HashMap<>();
-        accounts = new ArrayList<>();
-        personAccountMap = new HashMap<>();
-    }
+    
+public Bank() {
+    personAccountMap = new HashMap<>();
+    countryCodeCounters = new HashMap<>();
+    accounts = new ArrayList<>();
+}
 
     public void createAccount(String countryCode, double initialBalance, Person accountOwner) {
         int accountCounter = countryCodeCounters.getOrDefault(countryCode, 1);
+        countryCodeCounters.put(countryCode, accountCounter + 1);
+
         String accountNumber = generateAccountNumber(countryCode, accountCounter);
         String currency = getCurrency(countryCode);
+        
         BankAccount account = new BankAccount(accountNumber, currency, initialBalance, accountOwner);
         accounts.add(account);
-        countryCodeCounters.put(countryCode, accountCounter + 1);
-        printAccountCreationMessage(account);
-        String transaction = "Account created: " + accountNumber +
-                " with balance: " + account.formatAmount(initialBalance, currency);
-        account.getTransactions().logTransaction(accountNumber, transaction);
         personAccountMap.put(accountOwner.getName(), accountNumber);
+
+        String transaction = "Account created: " + account.getAccountNumber() +
+                             " with balance: " + balanceFormat.format(account.getBalance()) +
+                             " " + account.getCurrency();
+        account.getTransactions().logTransaction(accountNumber, transaction);
+        System.out.println(transaction);
+    }
+
+    public String generateAccountNumber(String countryCode, int accountCounter) {
+        String counterString = accountNumberdf.format(accountCounter);
+        return countryCode + counterString;
     }
 
     private String getCurrency(String countryCode) {
@@ -45,58 +57,7 @@ public class Bank {
                 return "EUR";
         }
     }
-
-    private String generateAccountNumber(String countrycode, int accountCounter) {
-        DecimalFormat df = new DecimalFormat("00");
-        String counterString = df.format(accountCounter);
-        return countrycode + counterString + "ABCD1234567890";
-    }
-
-    private void printAccountCreationMessage(BankAccount account) {
-        DecimalFormat df = new DecimalFormat("#.00");
-        String message = "Account created: " + account.getAccountNumber() + 
-            " with balance: " + df.format(account.getBalance()) + 
-            " " + account.getCurrency();
-            System.out.println(message);
-    }
-
-    public void deposit(String accountNumber, double amount) {
-        BankAccount account = getAccount(accountNumber);
-        if (account != null) {
-            account.deposit(amount, account.getCurrency());
-        } else {
-            System.out.println("Account not found");
-        }
-    }
-    public void withdraw(String accountNumber, double amount) {
-        BankAccount account = getAccount(accountNumber);
-        if (account != null) {
-            account.withdraw(amount, account.getCurrency());
-        } else {
-            System.out.println("Account not found");
-        }
-    }
-    public void transfer(String accountNumberFrom, double amount, String accountNumberTo) {
-        BankAccount accountFrom = getAccount(accountNumberFrom);
-        BankAccount accountTo = getAccount(accountNumberTo);
-
-        if (accountFrom != null && accountTo != null) {
-            String currency = accountFrom.getCurrency();
-
-            if (accountFrom.getBalance() >= amount) {
-                accountFrom.withdraw(amount, currency);
-                accountTo.deposit(amount, currency);
-                System.out.println("Successfully transferred " + accountFrom.formatAmount(amount, currency) +
-                    " from account " + accountNumberFrom + " to account " + accountNumberTo);
-            } else {
-                System.out.println("Insufficient balance in account " + accountNumberFrom +
-                " to transfer " + accountFrom.formatAmount(amount, currency));
-            }
-        } else {
-            System.out.println("One or both accounts not found");
-        }
-    }
-
+    
     public BankAccount getAccount(String accountNumber) {
         for (BankAccount account : accounts) {
             if (account.getAccountNumber().equals(accountNumber)) {
@@ -113,7 +74,49 @@ public class Bank {
     public void printBalanceForPerson(String personName) {
         String accountNumber = getAccountNumberForPerson(personName);
         BankAccount account = getAccount(accountNumber);
-        System.out.println("\nBalance for " + personName + ": " + account.getBalance());
+        System.out.println("\nBalance for " + personName + ": " + balanceFormat.format(account.getBalance()) +
+                           " " + account.getCurrency());
+    }
+
+    public void deposit(String accountNumber, double amount) {
+        BankAccount account = getAccount(accountNumber);
+        if (account != null) {
+            account.deposit(amount, account.getCurrency());
+        } else {
+            System.out.println("Account not found.");
+        }
+    }
+    public void withdraw(String accountNumber, double amount) {
+        BankAccount account = getAccount(accountNumber);
+        if (account != null) {
+            account.withdraw(amount, account.getCurrency());
+        } else {
+            System.out.println("Account not found");
+        }
+    }
+    public void transfer(String accountNumberFrom, double amount, String accountNumberTo) {
+        BankAccount accountFrom = getAccount(accountNumberFrom);
+        BankAccount accountTo = getAccount(accountNumberTo);
+        if (accountFrom != null && accountTo != null) {
+            String currency = accountFrom.getCurrency();
+
+            if (amount > accountFrom.getBalance()) {
+                System.out.println("\nCan't withdraw more then what is on the account.");
+                System.out.println("Current balance of: " + accountFrom.getBalance() + " on account: " + accountNumberFrom);
+            } else {
+                accountFrom.withdraw(amount, currency);
+                accountTo.deposit(amount, currency);
+            }
+    
+        } else {
+            System.out.println("Account not found");
+        }
+    }
+
+    public void printHistory(String accountNumber) {
+        BankAccount account = getAccount(accountNumber);
+        Transactions transactions = account.getTransactions();
+        transactions.printTransactionHistory(accountNumber);
     }
 
     public void findRichestPerson() {
@@ -130,12 +133,6 @@ public class Bank {
             }
         }
         System.out.println("\nThe person with the highest balance on their account is " + richestPerson);
-        System.out.println("Balance: " + maxBalance + " "  + currency);
-    }
-
-    public void printHistory(String accountNumber) {
-        BankAccount account = getAccount(accountNumber);
-        Transactions transactions = account.getTransactions();
-        transactions.printTransactionHistory(accountNumber);
+        System.out.println("Balance: " + balanceFormat.format(maxBalance) + " "  + currency);
     }
 }

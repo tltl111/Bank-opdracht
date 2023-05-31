@@ -4,10 +4,11 @@ import java.util.Map;
 
 
 public class BankAccount {
+
     private String accountNumber;
     private String currency;
     private double balance;
-    private Transactions transactions;
+    protected Transactions transactions;
     private Person accountOwner;
 
     private Map<String, Double> conversionRates;
@@ -19,19 +20,18 @@ public class BankAccount {
         currencyConverter();
         transactions = new Transactions();
         this.accountOwner = accountOwner;
-        
     }
 
     public String getAccountNumber() {
         return accountNumber;
     }
-    public String getCurrency() {
-        return currency;
-    }
     public double getBalance() {
         return balance;
     }
-    public Transactions getTransactions() {
+    public String getCurrency() {
+        return currency;
+    }
+    protected Transactions getTransactions() {
         return transactions;
     }
     public Person getAccountOwner() {
@@ -40,74 +40,73 @@ public class BankAccount {
 
     public void deposit(double amount, String currency) {
         if (this.currency.equals(currency)) {
-            balance += amount;
-            String transaction = "Deposited " + formatAmount(amount, currency) +
-                    " into account: " + accountNumber;
+            this.balance += amount;
+            String transaction = "Deposited " + formatAmount(amount, currency) + 
+                                 " on account: " + this.accountNumber;
             transactions.logTransaction(accountNumber, transaction);
-            System.out.println("Succesfully deposited " + formatAmount(amount, currency) +
-                    " into account: " + accountNumber);
-            System.out.println("New balance of " + accountNumber + ": " + 
-                    formatAmount(balance, this.currency) + "\n");
-    } else {
-        double convertedAmount = convert(amount, currency, this.currency);
-        balance += convertedAmount;
-        String transaction = "Deposited " + formatAmount(amount, currency) +
-                    " (converted to " + formatAmount(convertedAmount, this.currency) +
-                    ") into account: " + accountNumber;
-        transactions.logTransaction(accountNumber, transaction);
-        System.out.println("Successfully deposited " + formatAmount(amount, currency) +
-                    " (converted to " + formatAmount(convertedAmount, this.currency) +
-                    ") into account: " + accountNumber);
-        System.out.println("New balance of " + accountNumber + ": " + 
-                    formatAmount(balance, this.currency) + "\n");
+
+            System.out.println("\nDeposited " + formatAmount(amount, currency) + 
+                               " on account: " + this.accountNumber);
+            System.out.println("New balance of : " + formatAmount(getBalance(), currency) + 
+                               " on account: " + this.accountNumber);
+        } else {
+            double convertedAmount = convert(amount, currency, this.currency);
+            this.balance += convertedAmount;
+            String transaction = "Deposited " + formatAmount(amount, currency) + 
+                                 " on account: " + this.accountNumber;
+            transactions.logTransaction(accountNumber, transaction);
+
+            System.out.println("\nDeposited " + formatAmount(amount, currency) + 
+                               " (converted to " + formatAmount(convertedAmount, this.currency) +
+                               ") on account: " + this.accountNumber);
+            System.out.println("New balance of : " + formatAmount(getBalance(), currency) +
+                               " on account: " + this.accountNumber);
         }
     }
 
     public void withdraw(double amount, String currency) {
         if (this.currency.equals(currency)) {
-            if (balance >= amount) {
-                balance -= amount;
-                String transaction = "Withdrawn " + formatAmount(amount, currency) +
-                        " from account: " + accountNumber;
+            if (amount > this.balance) {
+                String transaction = "Failed to withdraw " + formatAmount(amount, currency) +
+                                     " from acount: " + this.accountNumber;
                 transactions.logTransaction(accountNumber, transaction);
-                System.out.println("Successfully withdrew " + formatAmount(amount, currency) +
-                        " from account: " + accountNumber);
-                System.out.println("New balance of " + accountNumber + ": " + 
-                        formatAmount(balance, this.currency) + "\n");
+
+                System.out.println("\nCan't withdraw more then what is on the account.");
+                System.out.println("Current balance of: " + formatAmount(getBalance(), currency) +
+                                   " on account: " + this.accountNumber);
             } else {
-                System.out.println("Unsuccessful attempt to withdraw " + formatAmount(amount, currency) +
-                        " from account: " + accountNumber);
-                System.out.println("Insufficient balance on account: " + accountNumber + "\n");
+                this.balance -= amount;
+                String transaction = "Withdrew " + formatAmount(amount, currency) + 
+                                     " from account: " + this.accountNumber;
+                transactions.logTransaction(accountNumber, transaction);
+
+                System.out.println("\nWithdrew " + formatAmount(amount, currency) + 
+                                   " from account: " + this.accountNumber);
+                System.out.println("New balance of : " + formatAmount(getBalance(), currency) +
+                                   " on account: " + this.accountNumber);
             }
         } else {
             double convertedAmount = convert(amount, currency, this.currency);
-            if (balance >= convertedAmount) {
-                balance -= convertedAmount;
-                String transaction = "Withdrawn " + formatAmount(amount, currency) +
-                        " (converted to " + formatAmount(convertedAmount, this.currency) +
-                        ") from account: " + accountNumber;
+            if (convertedAmount > this.balance) {
+                String transaction = "Failed to withdraw " + formatAmount(amount, currency) +
+                                     " from acount: " + this.accountNumber;
                 transactions.logTransaction(accountNumber, transaction);
-                System.out.println("Successfully withdrew " + formatAmount(amount, currency) +
-                        " (converted to " + formatAmount(convertedAmount, this.currency) +
-                        ") from account: " + accountNumber);
-                System.out.println("New balance of " + accountNumber + ": " + 
-                        formatAmount(balance, this.currency) + "\n");
+
+                System.out.println("\nCan't withdraw more then what is on the account.");
+                System.out.println("Current balance of: " + formatAmount(getBalance(), currency) +
+                                   " on account: " + this.accountNumber);
             } else {
-                System.out.println("Unsuccessful attempt to withdraw " + formatAmount(amount, currency) +
-                        " (converted to " + formatAmount(convertedAmount, this.currency) +
-                        ") from account: " + accountNumber);
-                System.out.println("Insufficient balance on account: " + accountNumber + "\n");
+                this.balance -= convertedAmount;
+                String transaction = "Withdrew " + formatAmount(amount, currency) + 
+                                     " from account: " + this.accountNumber;
+                transactions.logTransaction(accountNumber, transaction);
+
+                System.out.println("\nWithdrew " + formatAmount(amount, currency) + 
+                                   " from account: " + this.accountNumber);
+                System.out.println("New balance of : " + formatAmount(getBalance(), currency) +
+                                   " on account: " + this.accountNumber);
             }
         }
-    }
-
-    public String printBalanceInCurrency(String targetCurrency) {
-        double convertedBalance = convert(balance, currency, targetCurrency);
-        return "Balance for account " + accountNumber + " in " + targetCurrency + ": " + formatAmount(convertedBalance, targetCurrency);
-    }
-
-    public String getBalanceWithCurrency() {
-        return "Balance: " + formatAmount(balance, currency);
     }
 
     public String formatAmount(double amount, String currency) {
@@ -117,7 +116,7 @@ public class BankAccount {
 
     @Override
     public String toString() {
-        return "Account Number: " + accountNumber + ", " + getBalanceWithCurrency();
+        return "Account number: " + this.accountNumber + ", " + getBalanceWithCurrency();
     }
 
     public void currencyConverter() {
@@ -128,10 +127,20 @@ public class BankAccount {
         conversionRates.put("GBP", 0.89);
         conversionRates.put("AFN", 93.21);
     }
-
     public double convert(double amount, String fromCurrency, String toCurrency) {
-        double conversionRateFrom = conversionRates.getOrDefault(fromCurrency, 1.0);
-        double conversionRateTo = conversionRates.getOrDefault(toCurrency, 1.0);
+        double conversionRateFrom = conversionRates.get(fromCurrency);
+        double conversionRateTo = conversionRates.get(toCurrency);
         return amount * (conversionRateTo / conversionRateFrom);
     }
+
+    public String printBalanceInDifferentCurrency(String targetCurrency) {
+        double convertedBalance = convert(this.balance, this.currency, targetCurrency);
+        return "Balance for account " + this.accountNumber + " in " + targetCurrency +
+               ": " + formatAmount(convertedBalance, targetCurrency);
+    }
+
+    public String getBalanceWithCurrency() {
+        return "Balance: " + formatAmount(this.balance, this.currency);
+    }
+
 }

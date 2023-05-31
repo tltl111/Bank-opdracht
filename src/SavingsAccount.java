@@ -1,8 +1,8 @@
-public class LoanAccount extends BankAccount {
-
+public class SavingsAccount extends BankAccount {
+    
     private double interestRate;
 
-    public LoanAccount(String accountNumber, String currency, double balance, double interestRate, Person accountOwner) {
+    public SavingsAccount(String accountNumber, String currency, double balance, double interestRate, Person accountOwner) {
         super(accountNumber, currency, balance, accountOwner);
         this.interestRate = interestRate;
     }
@@ -15,7 +15,7 @@ public class LoanAccount extends BankAccount {
         this.interestRate = interestRate;
     }
 
-    public void accrueInterest() {
+    public void addInterest() {
         double interestAmount = getBalance() * interestRate;
         deposit(interestAmount, getCurrency());
 

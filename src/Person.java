@@ -1,9 +1,9 @@
+import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.format.DateTimeFormatter;
 
 
-class Person {
+public class Person {
     private String name;
     private String birthDate;
     private String eyeColor;
@@ -17,24 +17,38 @@ class Person {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
     public String getBirthDate() {
-        return birthDate;
+        return this.birthDate;
     }
-    public String getEyeColor() {
-        return eyeColor;
+    public String getEyeColore() {
+        return this.eyeColor;
     }
     public String getRelationshipStatus() {
-        return relationshipStatus;
+        return this.relationshipStatus;
     }
+
+    // public void setName() {
+    //     this.name = name;
+    // }
+    // public void setBirthDate() {
+    //     this.birthDate = birthDate;
+    // }
+    // public void setEyeColor() {
+    //     this.eyeColor = eyeColor;
+    // }
+    // public void setRelationshipStatus() {
+    //     this.relationshipStatus = relationshipStatus;
+    // }
 
     public int getAge(String dob) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        LocalDate birthDate = LocalDate.parse(dob, formatter);
+        LocalDate birDate = LocalDate.parse(dob, formatter);
         LocalDate curDate = LocalDate.now();
+
         if ((dob != null) && (curDate != null)) {
-            return Period.between(birthDate, curDate).getYears();
+            return Period.between(birDate, curDate).getYears();
         } else {
             return 0;
         }

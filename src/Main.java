@@ -25,10 +25,14 @@ public class Main {
         // Geld storten
         bank.deposit("NL0000000001B", 250.0);
         bank.depositSavings("NL0000000001S", 250);
+        bank.depositSavings("UK0000000002S", 250);
         
         // Geld opnemen
         bank.withdraw("NL0000000002B", 200.0);
         bank.withdraw("NL0000000002B", 120000.0);
+
+        // Geld opnemen van een loan account
+        bank.takeOutLoan("UK0000000002L", 250);
 
         // Overboeking tussen rekening
         bank.transfer("NL0000000001B", 100000, "NL0000000002B");
@@ -41,19 +45,13 @@ public class Main {
         System.out.println(bank.getBankAccount("NL0000000001B").printBalanceInDifferentCurrency("USD"));
         System.out.println(bank.getBankAccount("NL0000000001B").printBalanceInDifferentCurrency("AFN"));
 
-        // Transactie geschiedenis weergeven
-        bank.printHistory("NL0000000001B");
-        bank.printHistory("NL0000000002B");
-        bank.printHistory("AF0000000001B");
-        bank.printHistory("US0000000001B");
-
         // Leeftijd checken van een persoon
         System.out.println("\nThe age of " + accountHolder1.getName() + " is " +
                            accountHolder1.getAge(accountHolder1.getBirthDate()));
         System.out.println("\nThe age of " + accountHolder2.getName() + " is " +
                            accountHolder2.getAge(accountHolder2.getBirthDate()));
         
-        // Account details opvragen aan de hand van een persoon
+        // Account details opvragen aan de hand van een persoon hun rekening
         bank.printBalanceForPerson("Dennis");
         bank.printBalanceForPerson("Amber");
         bank.printBalanceForPerson("Sharon");
@@ -64,5 +62,20 @@ public class Main {
         // Check of het werkt
         bank.deposit("NL0000000001B", 112500.0);
         bank.findRichestPerson();
+
+        // Adding and accrue interest on Savings and loan account
+        bank.addInterest("NL0000000001S");
+        bank.accrueInterest("UK0000000002L");
+        
+        // Transactie geschiedenis weergeven
+        bank.printHistory("NL0000000001B");
+        bank.printHistory("NL0000000001S");
+        bank.printHistory("UK0000000002L");
+        bank.printHistory("NL0000000002B");
+        bank.printHistory("AF0000000001B");
+        bank.printHistory("US0000000001B");
+        bank.printHistory("UK0000000002L");
+
+
     }
 }

@@ -109,6 +109,18 @@ public class BankAccount {
         }
     }
 
+    public void takeOutLoan(double amount, String currency) {
+        this.balance -= amount;
+        String transaction = "Withdrew " + formatAmount(amount, currency) + 
+                             " from account: " + this.accountNumber;
+        transactions.logTransaction(accountNumber, transaction);
+
+        System.out.println("\nWithdrew " + formatAmount(amount, currency) + 
+                           " from account: " + this.accountNumber);
+        System.out.println("New balance of : " + formatAmount(getBalance(), currency) +
+                           " on account: " + this.accountNumber);
+    }
+
     public String formatAmount(double amount, String currency) {
         DecimalFormat df = new DecimalFormat("#.00");
         return df.format(amount) + " " + currency;
@@ -141,6 +153,11 @@ public class BankAccount {
 
     public String getBalanceWithCurrency() {
         return "Balance: " + formatAmount(this.balance, this.currency);
+    }
+
+    public void addInterest() {
+    }
+    public void accrueInterest() {
     }
 
 }

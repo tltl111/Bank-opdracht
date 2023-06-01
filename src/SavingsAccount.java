@@ -15,11 +15,12 @@ public class SavingsAccount extends BankAccount {
         this.interestRate = interestRate;
     }
 
+    @Override
     public void addInterest() {
-        double interestAmount = getBalance() * interestRate;
+        double interestAmount = getBalance() * (interestRate / 100);
         deposit(interestAmount, getCurrency());
 
-        String transaction = "Deposited " + formatAmount(interestAmount, getCurrency()) + 
+        String transaction = "Applied interest of: " + formatAmount(interestAmount, getCurrency()) + 
                              " on account: " + getAccountNumber();
         transactions.logTransaction(getAccountNumber(), transaction);
 

@@ -23,30 +23,29 @@ public class Main {
         bank.createAccount("AF", 10000.0, accountHolder8);
         
         // Geld storten
-        bank.deposit("NL0000000001", 250.0);
+        bank.deposit("NL0000000001B", 250.0);
+        bank.depositSavings("NL0000000001S", 250);
         
         // Geld opnemen
-        bank.withdraw("NL0000000002", 200.0);
-        bank.withdraw("NL0000000002", 120000.0);
+        bank.withdraw("NL0000000002B", 200.0);
+        bank.withdraw("NL0000000002B", 120000.0);
 
         // Overboeking tussen rekening
-        bank.transfer("NL0000000001", 100000, "NL0000000002");
-        bank.transfer("NL0000000001", 1000, "NL0000000002");
-        bank.transfer("NL0000000001", 1000, "US0000000001");
-        bank.transfer("NL0000000001", 1000, "AF0000000001");
-        bank.transfer("AF0000000001", 10000, "US0000000001");
+        bank.transfer("NL0000000001B", 100000, "NL0000000002B");
+        bank.transfer("NL0000000001B", 1000, "NL0000000002B");
+        bank.transfer("NL0000000001B", 1000, "AF0000000001B");
+        bank.transfer("AF0000000001B", 10000, "US0000000001B");
     
-        // // Currency converter testen
-        // System.out.println();
-        System.out.println(bank.getAccount("NL0000000001").printBalanceInDifferentCurrency("GBP"));
-        System.out.println(bank.getAccount("NL0000000001").printBalanceInDifferentCurrency("USD"));
-        System.out.println(bank.getAccount("NL0000000001").printBalanceInDifferentCurrency("AFN"));
+        // Currency converter testen
+        System.out.println(bank.getBankAccount("NL0000000001B").printBalanceInDifferentCurrency("GBP"));
+        System.out.println(bank.getBankAccount("NL0000000001B").printBalanceInDifferentCurrency("USD"));
+        System.out.println(bank.getBankAccount("NL0000000001B").printBalanceInDifferentCurrency("AFN"));
 
-        // // Transactie geschiedenis weergeven
-        bank.printHistory("NL0000000001");
-        bank.printHistory("NL0000000002");
-        bank.printHistory("AF0000000001");
-        bank.printHistory("US0000000001");
+        // Transactie geschiedenis weergeven
+        bank.printHistory("NL0000000001B");
+        bank.printHistory("NL0000000002B");
+        bank.printHistory("AF0000000001B");
+        bank.printHistory("US0000000001B");
 
         // Leeftijd checken van een persoon
         System.out.println("\nThe age of " + accountHolder1.getName() + " is " +
@@ -63,7 +62,7 @@ public class Main {
         bank.findRichestPerson();
 
         // Check of het werkt
-        bank.deposit("NL0000000001", 112500.0);
+        bank.deposit("NL0000000001B", 112500.0);
         bank.findRichestPerson();
     }
 }

@@ -11,7 +11,7 @@ public class Main {
         Person accountHolder6 = new Person("Rose", "01-01-1999", "Green", "Karen");
         Person accountHolder7 = new Person("Lilly", "01-01-1999", "Green", "Single");
         Person accountHolder8 = new Person("Sharon", "01-01-1999", "Green", "Single");
-        
+
         // Nieuwe rekeningen aanmaken
         bank.createAccount("NL", 10000.0, accountHolder1);
         bank.createAccount("NL", 10000.0, accountHolder2);
@@ -21,12 +21,12 @@ public class Main {
         bank.createAccount("US", 10000.0, accountHolder6);
         bank.createAccount("AF", 10000.0, accountHolder7);
         bank.createAccount("AF", 10000.0, accountHolder8);
-        
+
         // Geld storten
         bank.deposit("NL0000000001B", 250.0);
         bank.depositSavings("NL0000000001S", 250);
         bank.depositSavings("UK0000000002S", 250);
-        
+
         // Geld opnemen
         bank.withdraw("NL0000000002B", 200.0);
         bank.withdraw("NL0000000002B", 120000.0);
@@ -39,7 +39,7 @@ public class Main {
         bank.transfer("NL0000000001B", 1000, "NL0000000002B");
         bank.transfer("NL0000000001B", 1000, "AF0000000001B");
         bank.transfer("AF0000000001B", 10000, "US0000000001B");
-    
+
         // Currency converter testen
         System.out.println(bank.getBankAccount("NL0000000001B").printBalanceInDifferentCurrency("GBP"));
         System.out.println(bank.getBankAccount("NL0000000001B").printBalanceInDifferentCurrency("USD"));
@@ -47,10 +47,10 @@ public class Main {
 
         // Leeftijd checken van een persoon
         System.out.println("\nThe age of " + accountHolder1.getName() + " is " +
-                           accountHolder1.getAge(accountHolder1.getBirthDate()));
+                accountHolder1.getAge(accountHolder1.getBirthDate()));
         System.out.println("\nThe age of " + accountHolder2.getName() + " is " +
-                           accountHolder2.getAge(accountHolder2.getBirthDate()));
-        
+                accountHolder2.getAge(accountHolder2.getBirthDate()));
+
         // Account details opvragen aan de hand van een persoon hun rekening
         bank.printBalanceForPerson("Dennis");
         bank.printBalanceForPerson("Amber");
@@ -66,7 +66,7 @@ public class Main {
         // Adding and accrue interest on Savings and loan account
         bank.addInterest("NL0000000001S");
         bank.accrueInterest("UK0000000002L");
-        
+
         // Transactie geschiedenis weergeven
         bank.printHistory("NL0000000001B");
         bank.printHistory("NL0000000001S");
@@ -75,7 +75,6 @@ public class Main {
         bank.printHistory("AF0000000001B");
         bank.printHistory("US0000000001B");
         bank.printHistory("UK0000000002L");
-
 
     }
 }

@@ -2,7 +2,8 @@ public class LoanAccount extends BankAccount {
 
     private double interestRate;
 
-    public LoanAccount(String accountNumber, String currency, double balance, double interestRate, Person accountOwner) {
+    public LoanAccount(String accountNumber, String currency, double balance, double interestRate,
+            Person accountOwner) {
         super(accountNumber, currency, balance, accountOwner);
         this.interestRate = interestRate;
     }
@@ -12,7 +13,7 @@ public class LoanAccount extends BankAccount {
     }
 
     public void setInterestRate(double rate) {
-        this.interestRate = interestRate;
+        this.interestRate = rate;
     }
 
     @Override
@@ -20,8 +21,8 @@ public class LoanAccount extends BankAccount {
         double interestAmount = getBalance() * (interestRate / 100);
         deposit(interestAmount, getCurrency());
 
-        String transaction = "Applied interest of: " + formatAmount(interestAmount, getCurrency()) + 
-                             " on account: " + getAccountNumber();
+        String transaction = "Applied interest of: " + formatAmount(interestAmount, getCurrency()) +
+                " on account: " + getAccountNumber();
         transactions.logTransaction(getAccountNumber(), transaction);
 
         System.out.println("\nApplied interest of " + formatAmount(interestAmount, getCurrency()) +
@@ -29,5 +30,5 @@ public class LoanAccount extends BankAccount {
         System.out.println("New balance: " + formatAmount(getBalance(), getCurrency()) +
                 " on account: " + getAccountNumber());
     }
-    
+
 }

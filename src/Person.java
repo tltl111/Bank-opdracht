@@ -2,7 +2,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 import java.time.Period;
 
-
 public class Person {
     private String name;
     private String birthDate;
@@ -19,27 +18,30 @@ public class Person {
     public String getName() {
         return this.name;
     }
+
     public String getBirthDate() {
         return this.birthDate;
     }
+
     public String getEyeColore() {
         return this.eyeColor;
     }
+
     public String getRelationshipStatus() {
         return this.relationshipStatus;
     }
 
     // public void setName() {
-    //     this.name = name;
+    // this.name = name;
     // }
     // public void setBirthDate() {
-    //     this.birthDate = birthDate;
+    // this.birthDate = birthDate;
     // }
     // public void setEyeColor() {
-    //     this.eyeColor = eyeColor;
+    // this.eyeColor = eyeColor;
     // }
     // public void setRelationshipStatus() {
-    //     this.relationshipStatus = relationshipStatus;
+    // this.relationshipStatus = relationshipStatus;
     // }
 
     public int getAge(String dob) {
